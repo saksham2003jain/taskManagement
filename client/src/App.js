@@ -1,24 +1,46 @@
-import logo from './logo.svg';
+import React, { Fragment, useState, useEffect } from 'react';
 import './App.css';
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+
+import Dashboard from './components/dashboard';
+import Register from './components/register';
+import Login from './components/login';
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const setAuth = (boolean) => {
+    setIsAuthenticated(boolean);
+  };
+  async function isAuth() {
+    try {
+      const response = await fetch("http://localhost:5000/auth/is-verify", {
+        method: "GET",
+        headers: { token: localStorage.token }
+      });
+
+      const parseRes = await response.json();
+      parseRes === true ? setIsAuthenticated(true) : setIsAuthenticated(false);
+      console.log(parseRes);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+  useEffect(() => {
+    isAuth()
+  });
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <Router>
+        <div className='container'>
+          <Routes>
+            <Route path="/login" element={!isAuthenticated ? <Login setAuth={setAuth} /> : <Dashboard setAuth={setAuth} />} />
+            <Route path="/register" element={!isAuthenticated ? <Register setAuth={setAuth} /> : <Dashboard setAuth={setAuth} />} />
+            <Route path="/dashboard" element={isAuthenticated ? <Dashboard setAuth={setAuth} /> : <Navigate to="/login" />} />
+          </Routes>
+        </div>
+      </Router>
+    </Fragment>
   );
 }
 
