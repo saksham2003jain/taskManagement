@@ -7,6 +7,7 @@ import Register from './components/register';
 import Login from './components/login';
 import TasksPage from './components/tasksPages';
 import CreateTask from './components/createTask';
+import UpdateTask from './components/updateTask';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -36,11 +37,13 @@ function App() {
       <Router>
         <div className='container'>
           <Routes>
+            <Route path='/' element={<Navigate to="/login" />} />
             <Route path="/login" element={!isAuthenticated ? <Login setAuth={setAuth} /> : <Dashboard setAuth={setAuth} />} />
             <Route path="/register" element={!isAuthenticated ? <Register setAuth={setAuth} /> : <Dashboard setAuth={setAuth} />} />
             <Route path="/dashboard" element={isAuthenticated ? <Dashboard setAuth={setAuth} /> : <Navigate to="/login" />} />
             <Route path="/tasks" element={isAuthenticated ? <TasksPage /> : <Navigate to="/login" />} />
             <Route path="/createTask" element={isAuthenticated ? <CreateTask /> : <Navigate to="/login" />} />
+            <Route path="/updateTask" element={isAuthenticated ? <UpdateTask /> : <Navigate to="/login" />} />
           </Routes>
         </div>
       </Router>

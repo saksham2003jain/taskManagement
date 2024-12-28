@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const TasksPage = () => {
     const location = useLocation();
@@ -7,6 +7,33 @@ const TasksPage = () => {
 
     // State to store names
     const [assignedNames, setAssignedNames] = useState({});
+
+    const navigate = useNavigate();
+
+    const updateTask = (id) => {
+        navigate(`/updateTask?id=${id}`);
+    };
+
+
+
+    const deleteTask = async (id) => {
+        try {
+            const response = await fetch("http://localhost:5000/task/delete", {
+                method: "DELETE",
+                headers: { token: localStorage.token, query: id }
+            });
+            if (!response.ok) {
+                return alert("Task has not been deleted.");
+            }
+            alert("Task Successfully Deleted.");
+            navigate("/dashboard");
+
+        } catch (error) {
+            console.error(error.message);
+        }
+    };
+
+
 
     // Function to fetch name by ID
     async function getName(id) {
@@ -32,6 +59,32 @@ const TasksPage = () => {
             return "Unknown"; // Fallback for network errors
         }
     }
+
+    //Function to fetch role of user by ID
+    async function getRoleName(id) {
+        try {
+            if (!id) {
+                return "None";
+            }
+            const response = await fetch("http://localhost:5000/dashboard/get_by_id", {
+                method: "GET",
+                headers: { userId: id, token: localStorage.token },
+            });
+
+            const parseRes = await response.json();
+
+            if (!response.ok) {
+                console.error(parseRes);
+                return "Unknown"; // Fallback for errors
+            }
+
+            return parseRes.role_name; // Return the user_name
+        } catch (error) {
+            console.error(error.message);
+            return "Unknown"; // Fallback for network errors
+        }
+    };
+
 
 
     // Fetch names for all tasks
@@ -67,9 +120,8 @@ const TasksPage = () => {
                                     Assigned To: {assignedNames[task.task_assigned_to] || "None"}
                                 </p>
                             </div>
-                            <button className="btn btn-primary btn-block">Update</button>
-                            <br />
-                            <button className="btn btn-primary btn-block">Delete</button>
+                            <button className="btn btn-primary btn-block my-3" onClick={() => updateTask(task.task_id)} >Update</button>
+                            <button className="btn btn-primary btn-block my-3" onClick={() => deleteTask(task.task_id)} >Delete</button>
                         </div>
                     </div>
                 ))}

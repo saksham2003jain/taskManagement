@@ -62,6 +62,23 @@ const Dashboard = ({ setAuth }) => {
         }
     };
 
+    async function allTask() {
+        try {
+            const response = await fetch("http://localhost:5000/task/view", {
+                method: "GET",
+                headers: { token: localStorage.token }
+            });
+            const parseRes = await response.json();
+            navigate("/tasks", { state: { tasks: parseRes } });
+            // console.log(parseRes);
+
+        } catch (error) {
+            console.error(error.message);
+        }
+    };
+
+
+
 
     const logout = (e) => {
         e.preventDefault();
@@ -80,6 +97,8 @@ const Dashboard = ({ setAuth }) => {
             <button className="btn btn-primary btn-block my-3" onClick={e => taskAssignedByMe(e)} >Tasks Assigned By {name}</button>
             <br />
             <button className="btn btn-primary btn-block my-3" onClick={e => taskAssignedToMe(e)} >Tasks Assigned To {name}</button>
+            <br />
+            <button className="btn btn-primary btn-block my-3" onClick={e => allTask(e)} >All Tasks</button>
             <br />
             <button className="btn btn-primary btn-block" onClick={e => logout(e)} >Logout</button>
         </Fragment>

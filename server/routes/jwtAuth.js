@@ -87,4 +87,16 @@ router.get("/is-verify", authorization, async (req, res) => {
     }
 });
 
+// get all users
+router.get("/get-all-users", authorization, async (req, res) => {
+    try {
+        const user = await pool.query("SELECT * FROM users");
+        console.log(user.rows);
+        res.status(200).json(user.rows);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error in jwtAuth getallusers");
+    }
+})
+
 module.exports = router;

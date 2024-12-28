@@ -63,14 +63,18 @@ const Register = ({ setAuth }) => {
                     value={name}
                     onChange={e => onChange(e)}
                 />
-                <input
-                    type="text"
+                <select
                     name="role"
-                    placeholder="role"
                     className="form-control my-3"
                     value={role}
                     onChange={e => onChange(e)}
-                />
+                >
+                    <option value="" disabled>
+                        Select Role
+                    </option>
+                    <option value="admin">Admin</option>
+                    <option value="user">Manager</option>
+                </select>
                 <button className="btn btn-success btn-block" >Submit</button>
             </form>
             <Link to="/login">Login</Link>

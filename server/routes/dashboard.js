@@ -25,10 +25,14 @@ router.get("/get_by_id", authorization, async (req, res) => {
             return res.status(400).json("User ID is required.");
         }
 
+
         // Query the database for the user_name
         const result = await pool.query(
-            "SELECT user_name FROM users WHERE user_id = $1",
+            "SELECT * FROM users WHERE user_id = $1",
             [userId]
+        );
+        const isAdmin = await pool.query(
+            "SELECT role_name FROM roles WHERE role_id=$1", [req.user]
         );
 
         if (result.rows.length === 0) {
