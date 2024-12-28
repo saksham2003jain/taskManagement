@@ -9,6 +9,9 @@ const Dashboard = ({ setAuth }) => {
     const [name, setName] = useState("");
 
 
+    const createTask = () => {
+        navigate("/createTask");
+    };
 
     async function getName() {
         try {
@@ -27,7 +30,7 @@ const Dashboard = ({ setAuth }) => {
         } catch (error) {
             console.error(error.message);
         }
-    }
+    };
 
     async function taskAssignedByMe() {
         try {
@@ -42,7 +45,7 @@ const Dashboard = ({ setAuth }) => {
         } catch (error) {
             console.error(error.message);
         }
-    }
+    };
 
     async function taskAssignedToMe() {
         try {
@@ -57,13 +60,14 @@ const Dashboard = ({ setAuth }) => {
         } catch (error) {
             console.error(error.message);
         }
-    }
+    };
+
 
     const logout = (e) => {
         e.preventDefault();
         localStorage.removeItem("token");
         setAuth(false);
-    }
+    };
 
     useEffect(() => { getName() }, []);
 
@@ -71,12 +75,11 @@ const Dashboard = ({ setAuth }) => {
     return (
         <Fragment>
             <h1>Dashboard {name} </h1>
-
+            <button className="btn btn-primary btn-block my-3" onClick={e => createTask()} >Create Task</button>
+            <br />
             <button className="btn btn-primary btn-block my-3" onClick={e => taskAssignedByMe(e)} >Tasks Assigned By {name}</button>
             <br />
             <button className="btn btn-primary btn-block my-3" onClick={e => taskAssignedToMe(e)} >Tasks Assigned To {name}</button>
-            <br />
-            <button className="btn btn-primary btn-block my-3" onClick={e => taskAssignedToMe(e)} >Create Task</button>
             <br />
             <button className="btn btn-primary btn-block" onClick={e => logout(e)} >Logout</button>
         </Fragment>

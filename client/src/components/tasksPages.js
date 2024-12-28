@@ -50,7 +50,7 @@ const TasksPage = () => {
 
     return (
         <div className="container">
-            <h1 className="my-3">Tasks Assigned By Me</h1>
+            <h1 className="my-3">Tasks</h1>
             <div className="row">
                 {tasks.map((task, index) => (
                     <div key={index} className="col-md-4 my-3">
