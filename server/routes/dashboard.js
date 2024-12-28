@@ -15,6 +15,35 @@ router.get("/", authorization, async (req, res) => {
     }
 });
 
+// to get user by id
+router.get("/get_by_id", authorization, async (req, res) => {
+    try {
+        // Access userId from request headers
+        const userId = req.headers.userid;
+
+        if (!userId) {
+            return res.status(400).json("User ID is required.");
+        }
+
+        // Query the database for the user_name
+        const result = await pool.query(
+            "SELECT user_name FROM users WHERE user_id = $1",
+            [userId]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json("User not found.");
+        }
+
+        // Send only the user_name
+        res.json({ user_name: result.rows[0].user_name });
+    } catch (error) {
+        console.error(error.message);
+        return res.status(500).json("Server Error in dashboard.");
+    }
+});
+
+
 // to get all the task assigned to user
 
 router.get("/assigned_to_me", authorization, async (req, res) => {

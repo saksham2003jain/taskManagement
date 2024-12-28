@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-d
 import Dashboard from './components/dashboard';
 import Register from './components/register';
 import Login from './components/login';
+import TasksPage from './components/tasksPages';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -37,6 +38,8 @@ function App() {
             <Route path="/login" element={!isAuthenticated ? <Login setAuth={setAuth} /> : <Dashboard setAuth={setAuth} />} />
             <Route path="/register" element={!isAuthenticated ? <Register setAuth={setAuth} /> : <Dashboard setAuth={setAuth} />} />
             <Route path="/dashboard" element={isAuthenticated ? <Dashboard setAuth={setAuth} /> : <Navigate to="/login" />} />
+            <Route path="/tasks" element={isAuthenticated ? <TasksPage /> : <Navigate to="/login" />} />
+
           </Routes>
         </div>
       </Router>
