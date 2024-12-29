@@ -77,7 +77,12 @@ const Register = ({ setAuth }) => {
                 </select>
                 <button className="btn btn-success btn-block" >Submit</button>
             </form>
-            <Link to="/login">Login</Link>
+            {/* Registration Link */}
+            <div className="text-center mt-3">
+                <p>
+                    Don't have an account? <Link to="/register">Register here</Link>
+                </p>
+            </div>
         </Fragment>
     );
 };

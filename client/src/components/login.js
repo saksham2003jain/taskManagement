@@ -2,11 +2,12 @@ import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Login = ({ setAuth }) => {
-
     const [inputs, setInputs] = useState({
         email: "",
         password: "",
     });
+
+    const [error, setError] = useState(""); // To handle login errors
 
     const { email, password } = inputs;
 
@@ -14,7 +15,6 @@ const Login = ({ setAuth }) => {
         setInputs({ ...inputs, [e.target.name]: e.target.value });
     };
 
-    // making POST request to the backend server
     const onSubmitForm = async (e) => {
         e.preventDefault();
         try {
@@ -22,40 +22,68 @@ const Login = ({ setAuth }) => {
             const response = await fetch("http://localhost:5000/auth/login", {
                 method: "POST",
                 headers: { "Content-type": "application/json" },
-                body: JSON.stringify(body)
+                body: JSON.stringify(body),
             });
 
-            const parseRes = await response.json();// In this we have token
-            localStorage.setItem("token", parseRes.token);// store the token in local storage
-            setAuth(true);
-            console.log(parseRes);
+            const parseRes = await response.json();
+
+            if (response.ok) {
+                localStorage.setItem("token", parseRes.token); // Store the token
+                setAuth(true);
+            } else {
+                setError(parseRes.message || "Login failed. Please try again.");
+            }
         } catch (error) {
             console.error(error.message);
+            setError("An unexpected error occurred. Please try again later.");
         }
     };
 
     return (
         <Fragment>
-            <h1 className="text-center my-5" >Login</h1>
-            <form onSubmit={onSubmitForm}>
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="email"
-                    className="form-control my-3"
-                    value={email}
-                    onChange={e => onChange(e)}
-                />
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="password" className="form-control my-3"
-                    value={password}
-                    onChange={e => onChange(e)}
-                />
-                <button className="btn btn-success btn-block" >Submit</button>
+            {/* Header */}
+            <div className="login-header text-center my-4">
+                <h1>Login</h1>
+            </div>
+
+            {/* Error Message */}
+            {error && <div className="alert alert-danger text-center">{error}</div>}
+
+            {/* Login Form */}
+            <form className="login-form" onSubmit={onSubmitForm}>
+                <div className="form-group">
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        className="form-control my-3"
+                        value={email}
+                        onChange={onChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        className="form-control my-3"
+                        value={password}
+                        onChange={onChange}
+                        required
+                    />
+                </div>
+                <button type="submit" className="btn btn-success btn-block">
+                    Login
+                </button>
             </form>
-            <Link to="/register" >Register</Link>
+
+            {/* Registration Link */}
+            <div className="text-center mt-3">
+                <p>
+                    Don't have an account? <Link to="/register">Register here</Link>
+                </p>
+            </div>
         </Fragment>
     );
 };
