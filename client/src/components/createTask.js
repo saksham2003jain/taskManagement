@@ -30,7 +30,7 @@ const CreateTask = () => {
             }
             const body = { title, description, priority, dueDate, assignedTo };
 
-            const response = await fetch("http://localhost:5000/task/create", {
+            const response = await fetch("http://3.108.52.224:5000/task/create", {
                 method: "POST",
                 headers: { "Content-type": "application/json", token: localStorage.token },
                 body: JSON.stringify(body),
@@ -54,7 +54,7 @@ const CreateTask = () => {
 
     const getAllUsers = async (e) => {
         try {
-            const response = await fetch("http://localhost:5000/auth/get-all-users", {
+            const response = await fetch("http://3.108.52.224:5000/auth/get-all-users", {
                 method: "GET",
                 headers: { token: localStorage.token }
             });

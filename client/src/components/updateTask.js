@@ -29,7 +29,7 @@ const UpdateTask = () => {
         try {
             const body = { title, description, status, priority, dueDate, assignedTo };
 
-            const response = await fetch("http://localhost:5000/task/update", {
+            const response = await fetch("http://3.108.52.224:5000/task/update", {
                 method: "PUT",
                 headers: {
                     token: localStorage.token,
@@ -53,7 +53,7 @@ const UpdateTask = () => {
 
     const getAllUsers = async () => {
         try {
-            const response = await fetch("http://localhost:5000/auth/get-all-users", {
+            const response = await fetch("http://3.108.52.224:5000/auth/get-all-users", {
                 method: "GET",
                 headers: { token: localStorage.token },
             });
@@ -66,7 +66,7 @@ const UpdateTask = () => {
 
     const getTaskDetails = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/task/${taskId}`, {
+            const response = await fetch(`http://3.108.52.224:5000/task/${taskId}`, {
                 method: "GET",
                 headers: { token: localStorage.token },
             });

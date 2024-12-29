@@ -15,7 +15,7 @@ const Dashboard = ({ setAuth }) => {
 
     const getName = async () => {
         try {
-            const response = await fetch("http://localhost:5000/dashboard/", {
+            const response = await fetch("http://3.108.52.224:5000/dashboard/", {
                 method: "GET",
                 headers: { token: localStorage.token },
             });
@@ -31,11 +31,11 @@ const Dashboard = ({ setAuth }) => {
     const fetchTasks = async () => {
         try {
             const assignedByMeResponse = await fetch(
-                "http://localhost:5000/dashboard/assigned_by_me",
+                "http://3.108.52.224:5000/dashboard/assigned_by_me",
                 { method: "GET", headers: { token: localStorage.token } }
             );
             const assignedToMeResponse = await fetch(
-                "http://localhost:5000/dashboard/assigned_to_me",
+                "http://3.108.52.224:5000/dashboard/assigned_to_me",
                 { method: "GET", headers: { token: localStorage.token } }
             );
             setTasksAssignedByMe(await assignedByMeResponse.json());

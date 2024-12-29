@@ -18,7 +18,7 @@ const TasksPage = () => {
 
     const deleteTask = async (id) => {
         try {
-            const response = await fetch("http://localhost:5000/task/delete", {
+            const response = await fetch("http://3.108.52.224:5000/task/delete", {
                 method: "DELETE",
                 headers: { token: localStorage.token, query: id }
             });
@@ -41,7 +41,7 @@ const TasksPage = () => {
             if (!id) {
                 return "None";
             }
-            const response = await fetch("http://localhost:5000/dashboard/get_by_id", {
+            const response = await fetch("http://3.108.52.224:5000/dashboard/get_by_id", {
                 method: "GET",
                 headers: { userId: id, token: localStorage.token },
             });
@@ -66,7 +66,7 @@ const TasksPage = () => {
             if (!id) {
                 return "None";
             }
-            const response = await fetch("http://localhost:5000/dashboard/get_by_id", {
+            const response = await fetch("http://3.108.52.224:5000/dashboard/get_by_id", {
                 method: "GET",
                 headers: { userId: id, token: localStorage.token },
             });

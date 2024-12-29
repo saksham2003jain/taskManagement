@@ -21,7 +21,7 @@ const Register = ({ setAuth }) => {
         e.preventDefault();
         try {
             const body = { email, password, name, role };
-            const response = await fetch("http://localhost:5000/auth/register", {
+            const response = await fetch("http://3.108.52.224:5000/auth/register", {
                 method: "POST",
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify(body)
@@ -80,7 +80,7 @@ const Register = ({ setAuth }) => {
             {/* Registration Link */}
             <div className="text-center mt-3">
                 <p>
-                    Don't have an account? <Link to="/register">Register here</Link>
+                    Have an account? <Link to="/login">Login here</Link>
                 </p>
             </div>
         </Fragment>
