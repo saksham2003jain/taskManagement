@@ -61,7 +61,7 @@ const Dashboard = ({ setAuth }) => {
             {/* Header */}
             <div className="dashboard-header">
                 <div className="user-info">
-                    <h1 className="dashboard-title">Welcome, {name} <span>({role} Control)</span></h1>
+                    <h1 className="dashboard-title">Welcome, {name}</h1>
                     <span className="dashboard-email">{email}</span>
                 </div>
                 <button className="btn logout-button" onClick={logout}>
