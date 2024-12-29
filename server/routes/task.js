@@ -1,9 +1,12 @@
 const router = require("express").Router();
 const pool = require("../db");
 const authorization = require("../middleware/authorization");
-// const { upload } = require("../middleware/multer");
+const upload = require("../middleware/multer");
 // const { uploadOnCloudinary } = require("../utils/cloudinary");
 // const { params } = require("express-validator");
+// const path = require("path");
+const sendMail = require("../utils/mailer");
+
 
 
 // to get all task
@@ -43,20 +46,34 @@ router.post("/create", authorization, async (req, res) => {
                 return res.status(500).json("you are not allowed to assign task.")
             }
 
-            // const avatarLocalPath = files?.avatar[0]?.path;
-
-            // if (!avatarLocalPath) {
-            //     throw new ApiError(400, "Avatar file is required")
-            // }
-            // const avatar = await uploadOnCloudinary(avatarLocalPath);
-            // if (!avatar) {
-            //     throw new ApiError(400, "Avatar file is required")
-            // }
-
             const assignedBy = user.rows[0].user_id;
             const newTask = await pool.query(
                 "INSERT INTO tasks (task_title,task_description,task_assigned_to,task_assigned_by,task_status,task_priority,task_due_date) VALUES ($1,$2,(SELECT user_id FROM users WHERE user_name = $3),$4,$5,$6,$7) RETURNING *", [title, description, assignedTo, assignedBy, status, priority, dueDate]
             );
+
+            // Fetch email of the assigned user
+            console.log(assignedTo);
+            const assignedUser = await pool.query("SELECT user_email FROM users WHERE user_id = $1", [assignedTo]);
+            const assignedEmail = assignedUser.rows[0]?.user_email;
+
+
+            if (!assignedEmail) {
+                return res.status(404).json("Assigned user's email not found.");
+            }
+
+            // Send email notification
+            const subject = `New Task Assigned: ${title}`;
+            const text = `You have been assigned a new task: "${title}".\n\nDescription: ${description}\nPriority: ${priority}\nDue Date: ${dueDate}`;
+            const html = `
+            <h1>New Task Assigned</h1>
+            <p><strong>Title:</strong> ${title}</p>
+            <p><strong>Description:</strong> ${description}</p>
+            <p><strong>Priority:</strong> ${priority}</p>
+            <p><strong>Due Date:</strong> ${dueDate}</p>
+            <p>Please log in to your account to view more details.</p>
+        `;
+
+            await sendMail(assignedEmail, subject, text, html);
 
             res.json({ newTask });
 
@@ -69,6 +86,7 @@ router.post("/create", authorization, async (req, res) => {
         return res.status(500).json("Server error in create task");
     }
 });
+
 
 // update task
 // router.put("/update", authorization, async (req, res) => {

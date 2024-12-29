@@ -73,7 +73,7 @@ const Register = ({ setAuth }) => {
                         Select Role
                     </option>
                     <option value="admin">Admin</option>
-                    <option value="user">Manager</option>
+                    <option value="user">User</option>
                 </select>
                 <button className="btn btn-success btn-block" >Submit</button>
             </form>

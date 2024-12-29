@@ -25,6 +25,9 @@ CREATE TABLE tasks (
     task_due_date DATE NOT NULL
 );
 
+
+
+
 INSERT INTO roles (role_name,permission) VALUES ('admin','{
     "tasks":{
         "create":true,
